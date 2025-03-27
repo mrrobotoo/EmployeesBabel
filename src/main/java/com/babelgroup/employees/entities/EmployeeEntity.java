@@ -27,16 +27,16 @@ public class EmployeeEntity {
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
 
-	    @Column(nullable = false, length = 50)
+	    @Column(name = "PRIMERNOMBRE" ,nullable = false, length = 50)
 	    private String primerNombre;
 
-	    @Column(length = 50)
+	    @Column(name = "SEGUNDONOMBRE" , length = 50)
 	    private String segundoNombre;
 
-	    @Column(nullable = false, length = 50)
+	    @Column(name = "APELLIDOPATERNO" ,nullable = false, length = 50)
 	    private String apellidoPaterno;
 
-	    @Column(length = 50)
+	    @Column(name = "APELLIDOMATERNO" ,length = 50)
 	    private String apellidoMaterno;
 
 	    @Column(nullable = false)
@@ -45,7 +45,7 @@ public class EmployeeEntity {
 	    @Column(nullable = false, length = 1)
 	    private char sexo;
 
-	    @Column(nullable = false)
+	    @Column(name = "FECHANACIMIENTO" ,nullable = false)
 	    private LocalDate fechaNacimiento;
 
 	    @Column(nullable = false, length = 100)
