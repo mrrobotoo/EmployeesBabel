@@ -10,11 +10,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
