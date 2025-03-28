@@ -45,6 +45,21 @@ public class MessageConstants {
     public static final String EMPLOYEE_NO_CHANGES = "No changes were made to the user.";
 
     /**
+     * Message displayed when an employee already exists with the same data.
+     * <p>This message is used when trying to insert an employee with a name that already exists in the database.</p>
+     * 
+     * @param %s The full name of the employee that already exists in the system.
+     */
+    public static final String EMPLOYEE_ALREADY_EXISTS = "Employee already exists: %s";
+    
+    /**
+     * Message indicating that the employee's first name and last name are required.
+     * <p>This message is used when an employee's data is being validated and the first name or last name is missing.</p>
+     */
+    public static final String INVALID_EMPLOYEE_DATA = "First Name and Last Name are required.";
+
+    
+    /**
      * Private constructor to prevent instantiation of this utility class.
      */
     private MessageConstants() {
