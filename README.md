@@ -158,7 +158,9 @@ mvn clean test
 ### 2️⃣ Generating Jacoco Code Coverage Report
 After running the tests, you can generate the Jacoco code coverage report by executing:
 
+```bash
 mvn jacoco:report
+```
 This will generate a code coverage report in target/site/jacoco/index.html that you can open in your browser to visualize the test coverage.
 
 ## 📝 License
