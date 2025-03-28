@@ -145,6 +145,24 @@ If validation fails:
   "msg": "Validation failed: First name cannot be null"
 }
 ```
+## 🧪 Testing
+
+To ensure the proper functioning of the project and meet code coverage requirements, follow the instructions below to run tests with **JUnit** and **Jacoco**.
+
+### 1️⃣ Running Tests with Maven
+To run the tests and generate a code coverage report, use the following Maven command:
+
+```bash
+mvn clean test
+
+2️⃣ Generating Jacoco Code Coverage Report
+After running the tests, you can generate the Jacoco code coverage report by executing:
+
+bash
+Copy
+Edit
+mvn jacoco:report
+This will generate a code coverage report in target/site/jacoco/index.html that you can open in your browser to visualize the test coverage.
 
 ## 📝 License
 This project is licensed under the MIT License.
