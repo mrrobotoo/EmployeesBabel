@@ -14,7 +14,6 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class ResponseDto <T> implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
 	private  String msg;
     private  T data;
 }

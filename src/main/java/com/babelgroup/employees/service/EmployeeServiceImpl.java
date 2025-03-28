@@ -1,7 +1,6 @@
 package com.babelgroup.employees.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -17,16 +16,19 @@ import com.babelgroup.employees.repository.EmployeeRepository;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
 	@Override
 	public ResponseDto<List<EmployeeEntity>> getEmployees() {
+		List<EmployeeEntity> employees = employeeRepository.findAll();
+
 		ResponseDto<List<EmployeeEntity>> response = new ResponseDto<>();
-		response.setData(employeeRepository.findAll());
-		response.setMsg("ok");
-		
-		return response;
+	    response.setData(employees);
+	    response.setMsg(employees.isEmpty() ? "No employees found" : "ok");
+
+	    return response;
 	}
 
 	@Override
@@ -34,14 +36,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	    List<EmployeeEntity> employeeEntities = employees.stream()
 	            .map(employeeDto -> new EmployeeEntity(
 	                    null, 
-	                    employeeDto.getPrimerNombre(),
-	                    employeeDto.getSegundoNombre(),
-	                    employeeDto.getApellidoPaterno(),
-	                    employeeDto.getApellidoMaterno(),
-	                    employeeDto.getEdad(),
-	                    employeeDto.getSexo(),
-	                    employeeDto.getFechaNacimiento(),
-	                    employeeDto.getPuesto()))
+	                    employeeDto.getFirstName(),
+	                    employeeDto.getSecondName(),
+	                    employeeDto.getLastName(),
+	                    employeeDto.getMothersLastName(),
+	                    employeeDto.getAge(),
+	                    employeeDto.getGender(),
+	                    employeeDto.getDateOfBirth(),
+	                    employeeDto.getJobPosition()))
 	            .collect(Collectors.toList());
 
 	 
@@ -54,16 +56,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public ResponseDto<?> deleteEmployees(Long idPerson) {
-		Optional<EmployeeEntity> employee = 
-				employeeRepository.findById(idPerson); 
-		ResponseDto<String> response = new ResponseDto<>();
-    	
-    	String mensaje = (employee.isPresent()) ? "Successfully removed" : "The user does not exist,  " + idPerson + " please validate.";
-    	
-    	employeeRepository.deleteById(idPerson);
-    	response.setMsg(mensaje);
-		
-        return response;
+		 return employeeRepository.findById(idPerson)
+			        .map(employee -> {
+			            employeeRepository.deleteById(idPerson);
+			            ResponseDto<String> response = new ResponseDto<>();
+			            response.setMsg("Successfully removed");
+			            return response;
+			        })
+			        .orElseGet(() -> {
+			            throw new ResourceNotFoundException("The user with ID " + idPerson + " does not exist, please validate.");
+			        });
 	}
 
 	@Override
@@ -73,14 +75,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	    boolean isUpdated = false;
 
-	    isUpdated |= updateIfChanged(employeeEntity::getPrimerNombre, employeeDto.getPrimerNombre(), employeeEntity::setPrimerNombre);
-	    isUpdated |= updateIfChanged(employeeEntity::getSegundoNombre, employeeDto.getSegundoNombre(), employeeEntity::setSegundoNombre);
-	    isUpdated |= updateIfChanged(employeeEntity::getApellidoPaterno, employeeDto.getApellidoPaterno(), employeeEntity::setApellidoPaterno);
-	    isUpdated |= updateIfChanged(employeeEntity::getApellidoMaterno, employeeDto.getApellidoMaterno(), employeeEntity::setApellidoMaterno);
-	    isUpdated |= updateIfChanged(employeeEntity::getEdad, employeeDto.getEdad(), employeeEntity::setEdad);
-	    isUpdated |= updateIfChanged(employeeEntity::getSexo, employeeDto.getSexo(), employeeEntity::setSexo);
-	    isUpdated |= updateIfChanged(employeeEntity::getFechaNacimiento, employeeDto.getFechaNacimiento(), employeeEntity::setFechaNacimiento);
-	    isUpdated |= updateIfChanged(employeeEntity::getPuesto, employeeDto.getPuesto(), employeeEntity::setPuesto);
+	    isUpdated |= updateIfChanged(employeeEntity::getFirstName, employeeDto.getFirstName(), employeeEntity::setFirstName);
+	    isUpdated |= updateIfChanged(employeeEntity::getSecondName, employeeDto.getSecondName(), employeeEntity::setSecondName);
+	    isUpdated |= updateIfChanged(employeeEntity::getLastName, employeeDto.getLastName(), employeeEntity::setLastName);
+	    isUpdated |= updateIfChanged(employeeEntity::getMothersLastName, employeeDto.getMothersLastName(), employeeEntity::setMothersLastName);
+	    isUpdated |= updateIfChanged(employeeEntity::getAge, employeeDto.getAge(), employeeEntity::setAge);
+	    isUpdated |= updateIfChanged(employeeEntity::getGender, employeeDto.getGender(), employeeEntity::setGender);
+	    isUpdated |= updateIfChanged(employeeEntity::getDateOfBirth, employeeDto.getDateOfBirth(), employeeEntity::setDateOfBirth);
+	    isUpdated |= updateIfChanged(employeeEntity::getJobPosition, employeeDto.getJobPosition(), employeeEntity::setJobPosition);
 
 	    if (isUpdated) {
 	        employeeRepository.save(employeeEntity);

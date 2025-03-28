@@ -23,31 +23,31 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class EmployeeEntity {
-	 	@Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
+ 	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	    @Column(name = "PRIMERNOMBRE" ,nullable = false, length = 50)
-	    private String primerNombre;
+    @Column(name = "PRIMERNOMBRE" ,nullable = false, length = 50)
+    private String firstName;
 
-	    @Column(name = "SEGUNDONOMBRE" , length = 50)
-	    private String segundoNombre;
+    @Column(name = "SEGUNDONOMBRE" , length = 50)
+    private String secondName;
 
-	    @Column(name = "APELLIDOPATERNO" ,nullable = false, length = 50)
-	    private String apellidoPaterno;
+    @Column(name = "APELLIDOPATERNO" ,nullable = false, length = 50)
+    private String lastName;
 
-	    @Column(name = "APELLIDOMATERNO" ,length = 50)
-	    private String apellidoMaterno;
+    @Column(name = "APELLIDOMATERNO" ,length = 50)
+    private String mothersLastName;
 
-	    @Column(nullable = false)
-	    private int edad;
+    @Column(name = "EDAD" ,nullable = false)
+    private int age;
 
-	    @Column(nullable = false, length = 1)
-	    private char sexo;
+    @Column(name = "SEXO" ,nullable = false, length = 1)
+    private char gender;
 
-	    @Column(name = "FECHANACIMIENTO" ,nullable = false)
-	    private LocalDate fechaNacimiento;
+    @Column(name = "FECHANACIMIENTO" ,nullable = false)
+    private LocalDate dateOfBirth;
 
-	    @Column(nullable = false, length = 100)
-	    private String puesto;
+    @Column(name = "PUESTO" ,nullable = false, length = 100)
+    private String jobPosition;
 }
