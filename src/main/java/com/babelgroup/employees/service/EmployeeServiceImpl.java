@@ -8,66 +8,102 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.babelgroup.employees.constants.MessageConstants;
 import com.babelgroup.employees.dto.EmployeeDto;
 import com.babelgroup.employees.dto.ResponseDto;
 import com.babelgroup.employees.entities.EmployeeEntity;
 import com.babelgroup.employees.exceptions.ResourceNotFoundException;
 import com.babelgroup.employees.repository.EmployeeRepository;
 
+/**
+ * Service implementation for managing employee-related operations.
+ * 
+ * <p>This class provides CRUD functionalities for employees, including:
+ * retrieving, inserting, updating, and deleting employee records.</p>
+ * 
+ * <p>It interacts with the {@link EmployeeRepository} to perform database operations.</p>
+ * 
+ * <h2>Features:</h2>
+ * <ul>
+ *   <li>Retrieve all employees</li>
+ *   <li>Insert new employees</li>
+ *   <li>Update employee details</li>
+ *   <li>Delete employees by ID</li>
+ *   <li>Validation and exception handling</li>
+ * </ul>
+ */
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
+	/**
+     * Retrieves all employees from the database.
+     * @return ResponseDto containing a list of employees.
+     */
 	@Override
 	public ResponseDto<List<EmployeeEntity>> getEmployees() {
-		List<EmployeeEntity> employees = employeeRepository.findAll();
-
-		ResponseDto<List<EmployeeEntity>> response = new ResponseDto<>();
-	    response.setData(employees);
-	    response.setMsg(employees.isEmpty() ? "No employees found" : "ok");
-
-	    return response;
-	}
-
+        List<EmployeeEntity> employees = employeeRepository.findAll();
+        ResponseDto<List<EmployeeEntity>> response = new ResponseDto<>();
+        response.setData(employees);
+        response.setMsg(employees.isEmpty() ? MessageConstants.NO_EMPLOYEES_FOUND : MessageConstants.SUCCESS);
+        return response;
+    }
+	
+	/**
+     * Inserts a list of new employees into the database.
+     * @param employees List of EmployeeDto objects to be inserted.
+     * @return ResponseDto with a success message.
+    */
 	@Override
-	public ResponseDto<?> insertEmployees(List<EmployeeDto> employees) {
-	    List<EmployeeEntity> employeeEntities = employees.stream()
-	            .map(employeeDto -> new EmployeeEntity(
-	                    null, 
-	                    employeeDto.getFirstName(),
-	                    employeeDto.getSecondName(),
-	                    employeeDto.getLastName(),
-	                    employeeDto.getMothersLastName(),
-	                    employeeDto.getAge(),
-	                    employeeDto.getGender(),
-	                    employeeDto.getDateOfBirth(),
-	                    employeeDto.getJobPosition()))
-	            .collect(Collectors.toList());
+    public ResponseDto<?> insertEmployees(List<EmployeeDto> employees) {
+        List<EmployeeEntity> employeeEntities = employees.stream()
+                .map(employeeDto -> new EmployeeEntity(
+                        null,
+                        employeeDto.getFirstName(),
+                        employeeDto.getSecondName(),
+                        employeeDto.getLastName(),
+                        employeeDto.getMothersLastName(),
+                        employeeDto.getAge(),
+                        employeeDto.getGender(),
+                        employeeDto.getDateOfBirth(),
+                        employeeDto.getJobPosition()))
+                .collect(Collectors.toList());
 
-	 
-	    employeeRepository.saveAll(employeeEntities);
-	    
-	    ResponseDto<String> response = new ResponseDto<>();
-	    response.setMsg("Employees were inserted successfully.");
-	    return response;
-	}
+        employeeRepository.saveAll(employeeEntities);
 
+        ResponseDto<String> response = new ResponseDto<>();
+        response.setMsg(MessageConstants.EMPLOYEES_INSERTED);
+        return response;
+    }
+    
+	/**
+     * Deletes an employee by their ID.
+     * @param idPerson ID of the employee to be deleted.
+     * @return ResponseDto with a success or error message.
+     * @throws ResourceNotFoundException if the employee is not found.
+     */
 	@Override
-	public ResponseDto<?> deleteEmployees(Long idPerson) {
-		 return employeeRepository.findById(idPerson)
-			        .map(employee -> {
-			            employeeRepository.deleteById(idPerson);
-			            ResponseDto<String> response = new ResponseDto<>();
-			            response.setMsg("Successfully removed");
-			            return response;
-			        })
-			        .orElseGet(() -> {
-			            throw new ResourceNotFoundException("The user with ID " + idPerson + " does not exist, please validate.");
-			        });
-	}
+    public ResponseDto<?> deleteEmployees(Long idPerson) {
+        return employeeRepository.findById(idPerson)
+                .map(employee -> {
+                    employeeRepository.deleteById(idPerson);
+                    ResponseDto<String> response = new ResponseDto<>();
+                    response.setMsg(MessageConstants.EMPLOYEE_DELETED);
+                    return response;
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(MessageConstants.EMPLOYEE_NOT_FOUND, idPerson)));
+    }
 
+
+    /**
+     * Updates an existing employee's information.
+     * @param employeeDto EmployeeDto object containing updated data.
+     * @return ResponseDto with update status.
+     * @throws ResourceNotFoundException if the employee is not found.
+     */
 	@Override
 	public ResponseDto<?> updateEmployee(EmployeeDto employeeDto) {
 	    EmployeeEntity employeeEntity = employeeRepository.findById(employeeDto.getId())
@@ -96,7 +132,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	    }
 	    return response;
 	}
-
+	
+	/**
+     * Helper method to update an entity field if the new value is different.
+     * @param getter Method reference to retrieve the current value.
+     * @param newValue The new value to be set.
+     * @param setter Method reference to update the value.
+     * @return true if the field was updated, false otherwise.
+     */
 	private <T> boolean updateIfChanged(Supplier<T> getter, T newValue, Consumer<T> setter) {
 	    if (getter.get() == null && newValue == null || (getter.get() != null && getter.get().equals(newValue))) {
 	        return false; 
