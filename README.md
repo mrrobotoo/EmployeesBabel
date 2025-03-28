@@ -154,13 +154,10 @@ To run the tests and generate a code coverage report, use the following Maven co
 
 ```bash
 mvn clean test
-
-2️⃣ Generating Jacoco Code Coverage Report
+```
+### 2️⃣ Generating Jacoco Code Coverage Report
 After running the tests, you can generate the Jacoco code coverage report by executing:
 
-bash
-Copy
-Edit
 mvn jacoco:report
 This will generate a code coverage report in target/site/jacoco/index.html that you can open in your browser to visualize the test coverage.
 
