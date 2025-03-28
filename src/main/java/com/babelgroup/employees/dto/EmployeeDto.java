@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
@@ -19,14 +20,14 @@ public class EmployeeDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	
-	@NotNull(message = "First name cannot be null")
+    @NotBlank(message = "First name cannot be null or empty")
 	@Size(max = 50, message = "First name cannot exceed 50 characters")
 	private String firstName;
 
 	@Size(max = 50, message = "Second name cannot exceed 50 characters")
 	private String secondName;
 
-	@NotNull(message = "Last name cannot be null")
+	@NotBlank(message = "Last name cannot be null or empty")
 	@Size(max = 50, message = "Last name cannot exceed 50 characters")
 	private String lastName;
 
@@ -37,15 +38,15 @@ public class EmployeeDto implements Serializable {
 	@Max(value = 120, message = "Age cannot exceed 120 years")
 	private int age;
 
-	@NotNull(message = "Gender cannot be null")
-	@Pattern(regexp = "^[MF]$", message = "Gender must be 'M' or 'F'")
-	private char gender;
+	@NotBlank(message = "Gender cannot be null  or empty")
+	@Pattern(regexp = "M|F", message = "Gender must be 'M' or 'F'")
+	private String gender;
 
 	@NotNull(message = "Date of birth cannot be null")
 	@Past(message = "Date of birth must be a past date")
 	private LocalDate dateOfBirth;
 
-	@NotNull(message = "Job position cannot be null")
+	@NotBlank(message = "Job position cannot be null or empty")
 	@Size(max = 100, message = "Job position cannot exceed 100 characters")
 	private String jobPosition;
 

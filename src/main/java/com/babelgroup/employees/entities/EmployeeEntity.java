@@ -43,7 +43,7 @@ public class EmployeeEntity {
     private int age;
 
     @Column(name = "SEXO" ,nullable = false, length = 1)
-    private char gender;
+    private String gender;
 
     @Column(name = "FECHANACIMIENTO" ,nullable = false)
     private LocalDate dateOfBirth;

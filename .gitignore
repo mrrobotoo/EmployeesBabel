@@ -7,7 +7,6 @@ target/
 ### STS ###
 .apt_generated
 .classpath
-.class
 .factorypath
 .project
 .settings
@@ -32,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar archivos de compilación
+*.class
+
+# Ignorar archivos de log
+*.log
